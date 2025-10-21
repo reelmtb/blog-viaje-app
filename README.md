@@ -40,3 +40,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 1. install vscode
 2. install node
 3. install psql
+
+## BRANCHING STRATEGY
+
+Create branches following the convention feature/<feature-name> from main. 
+Once live, we will create a develop branch and use feature, release, and hotfix branches.
