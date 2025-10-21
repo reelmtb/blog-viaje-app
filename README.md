@@ -40,6 +40,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 1. install vscode
 2. install node
 3. install psql
+4. run npm install
+5. create db viaje
+6. set .env connection string
+7. run npx prisma migrate dev --name init
+
 
 ## BRANCHING STRATEGY
 

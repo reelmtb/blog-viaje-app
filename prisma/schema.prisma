@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id String @id @default(uuid())
+  name    String?
+  email   String? @unique
+  trips   Trip[]  @relation("StarterTrips")
+  availabilities Availability[]
+  participants TripParticipant[]
+}
+
+model City {
+  city_id String @id @default(uuid())
+  name    String
+  country String?
+  tripOptions TripLocationOption[]
+  participantCities ParticipantCity[]
+}
+
+model Trip {
+  trip_id   String @id @default(uuid())
+  trip_name String?
+  starter   User   @relation("StarterTrips", fields: [starter_id], references: [user_id])
+  starter_id String
+  locationOptions TripLocationOption[]
+  participants TripParticipant[]
+  availabilities Availability[]
+}
+
+model TripLocationOption {
+  id      String @id @default(uuid())
+  trip    Trip   @relation(fields: [trip_id], references: [trip_id])
+  trip_id String
+  city    City   @relation(fields: [city_id], references: [city_id])
+  city_id String
+}
+
+model TripParticipant {
+  participant_id String @id @default(uuid())
+  trip           Trip   @relation(fields: [trip_id], references: [trip_id])
+  trip_id        String
+  user           User   @relation(fields: [user_id], references: [user_id])
+  user_id        String
+  max_cost       Float?
+  cities         ParticipantCity[]
+}
+
+model ParticipantCity {
+  id             String @id @default(uuid())
+  participant    TripParticipant @relation(fields: [participant_id], references: [participant_id])
+  participant_id String
+  city           City @relation(fields: [city_id], references: [city_id])
+  city_id        String
+}
+
+model Availability {
+  id      String @id @default(uuid())
+  trip    Trip   @relation(fields: [trip_id], references: [trip_id])
+  trip_id String
+  user    User   @relation(fields: [user_id], references: [user_id])
+  user_id String
+  date    DateTime
+}
