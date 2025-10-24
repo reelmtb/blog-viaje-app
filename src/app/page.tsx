@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client';
 
 import CreateTripForm from '@/app/components/CreateTripForm';
@@ -9,7 +8,6 @@ function useCurrentUser() {
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    // TODO: replace with Auth0/session
     const mockUserId = '11111111-1111-1111-1111-111111111111';
     setUserId(mockUserId);
   }, []);

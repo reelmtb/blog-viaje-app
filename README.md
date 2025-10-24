@@ -44,6 +44,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 5. create db viaje
 6. set .env connection string
 7. run npx prisma migrate dev --name init
+8. run npx prisma studio to view db in gui
+9. run npm run dev to run app
 
 
 ## BRANCHING STRATEGY
