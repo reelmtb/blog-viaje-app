@@ -50,5 +50,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## BRANCHING STRATEGY
 
-Create branches following the convention feature/<feature-name> from main. 
+Create branches following the convention feature/'feature-name' from main. 
 Once live, we will create a develop branch and use feature, release, and hotfix branches.
