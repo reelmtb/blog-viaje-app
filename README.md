@@ -45,7 +45,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 6. set .env connection string
 7. run npx prisma migrate dev --name init
 8. run npx prisma studio to view db in gui
-9. run npm run dev to run app
+9. create user with id '11111111-1111-1111-1111-111111111111' using gui
+10. run npm run dev to run app
 
 
 ## BRANCHING STRATEGY
