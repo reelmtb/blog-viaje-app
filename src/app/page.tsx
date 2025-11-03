@@ -1,6 +1,6 @@
 'use client';
 
-import CreateTripForm from '@/app/components/CreateTripForm';
+import CreateTripForm from '@/components/CreateTripForm';
 import { useEffect, useState } from 'react';
 
 // Mock current user

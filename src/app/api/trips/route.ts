@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createTrip } from '@/app/features/trips/trips';
+import { createTrip } from '@/features/trips/trips';
 
 export async function POST(req: NextRequest) {
   try {
