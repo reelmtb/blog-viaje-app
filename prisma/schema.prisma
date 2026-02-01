@@ -14,10 +14,12 @@ datasource db {
 }
 
 model User {
-  user_id String @id @default(uuid())
-  name    String?
-  email   String? @unique
-  trips   Trip[]  @relation("StarterTrips")
+  user_id    String   @id @default(uuid())
+  name       String?
+  email      String?  @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  trips      Trip[]   @relation("StarterTrips")
   availabilities Availability[]
   participants TripParticipant[]
 }
@@ -31,9 +33,11 @@ model City {
 }
 
 model Trip {
-  trip_id   String @id @default(uuid())
-  trip_name String?
-  starter   User   @relation("StarterTrips", fields: [starter_id], references: [user_id])
+  trip_id    String   @id @default(uuid())
+  trip_name  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  starter    User     @relation("StarterTrips", fields: [starter_id], references: [user_id])
   starter_id String
   locationOptions TripLocationOption[]
   participants TripParticipant[]
@@ -46,6 +50,8 @@ model TripLocationOption {
   trip_id String
   city    City   @relation(fields: [city_id], references: [city_id])
   city_id String
+
+  @@unique([trip_id, city_id])
 }
 
 model TripParticipant {
@@ -56,6 +62,8 @@ model TripParticipant {
   user_id        String
   max_cost       Float?
   cities         ParticipantCity[]
+
+  @@unique([trip_id, user_id])
 }
 
 model ParticipantCity {
@@ -64,13 +72,18 @@ model ParticipantCity {
   participant_id String
   city           City @relation(fields: [city_id], references: [city_id])
   city_id        String
+
+  @@unique([participant_id, city_id])
 }
 
 model Availability {
-  id      String @id @default(uuid())
-  trip    Trip   @relation(fields: [trip_id], references: [trip_id])
+  id      String   @id @default(uuid())
+  trip    Trip     @relation(fields: [trip_id], references: [trip_id])
   trip_id String
-  user    User   @relation(fields: [user_id], references: [user_id])
+  user    User     @relation(fields: [user_id], references: [user_id])
   user_id String
   date    DateTime
+
+  @@unique([trip_id, user_id, date])
+  @@index([trip_id])
 }
