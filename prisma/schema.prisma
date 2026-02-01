@@ -46,7 +46,7 @@ model Trip {
 
 model TripLocationOption {
   id      String @id @default(uuid())
-  trip    Trip   @relation(fields: [trip_id], references: [trip_id])
+  trip    Trip   @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
   trip_id String
   city    City   @relation(fields: [city_id], references: [city_id])
   city_id String
@@ -56,7 +56,7 @@ model TripLocationOption {
 
 model TripParticipant {
   participant_id String @id @default(uuid())
-  trip           Trip   @relation(fields: [trip_id], references: [trip_id])
+  trip           Trip   @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
   trip_id        String
   user           User   @relation(fields: [user_id], references: [user_id])
   user_id        String
@@ -68,7 +68,7 @@ model TripParticipant {
 
 model ParticipantCity {
   id             String @id @default(uuid())
-  participant    TripParticipant @relation(fields: [participant_id], references: [participant_id])
+  participant    TripParticipant @relation(fields: [participant_id], references: [participant_id], onDelete: Cascade)
   participant_id String
   city           City @relation(fields: [city_id], references: [city_id])
   city_id        String
@@ -78,7 +78,7 @@ model ParticipantCity {
 
 model Availability {
   id      String   @id @default(uuid())
-  trip    Trip     @relation(fields: [trip_id], references: [trip_id])
+  trip    Trip     @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
   trip_id String
   user    User     @relation(fields: [user_id], references: [user_id])
   user_id String
