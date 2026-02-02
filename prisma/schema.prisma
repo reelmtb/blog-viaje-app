@@ -20,7 +20,6 @@ model User {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   trips      Trip[]   @relation("StarterTrips")
-  availabilities Availability[]
   participants TripParticipant[]
 }
 
@@ -41,7 +40,6 @@ model Trip {
   starter_id String
   locationOptions TripDestinationOption[]
   participants TripParticipant[]
-  availabilities Availability[]
 }
 
 model TripDestinationOption {
@@ -62,6 +60,7 @@ model TripParticipant {
   user_id        String
   max_cost       Float?
   destinations   ParticipantDestination[]
+  availabilities Availability[]
 
   @@unique([trip_id, user_id])
 }
@@ -72,18 +71,18 @@ model ParticipantDestination {
   participant_id String
   destination    Destination @relation(fields: [destination_id], references: [destination_id])
   destination_id String
+  rank           Int?
 
   @@unique([participant_id, destination_id])
+  @@index([participant_id, rank])
 }
 
 model Availability {
-  id      String   @id @default(uuid())
-  trip    Trip     @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
-  trip_id String
-  user    User     @relation(fields: [user_id], references: [user_id])
-  user_id String
-  date    DateTime
+  id             String   @id @default(uuid())
+  participant    TripParticipant @relation(fields: [participant_id], references: [participant_id], onDelete: Cascade)
+  participant_id String
+  date           DateTime
 
-  @@unique([trip_id, user_id, date])
-  @@index([trip_id])
+  @@unique([participant_id, date])
+  @@index([participant_id])
 }
