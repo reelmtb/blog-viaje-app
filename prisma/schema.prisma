@@ -28,7 +28,7 @@ model Destination {
   destination_id String @id @default(uuid())
   name    String
   country String?
-  tripOptions TripLocationOption[]
+  tripOptions TripDestinationOption[]
   participantDestinations ParticipantDestination[]
 }
 
@@ -39,12 +39,12 @@ model Trip {
   updatedAt  DateTime @updatedAt
   starter    User     @relation("StarterTrips", fields: [starter_id], references: [user_id])
   starter_id String
-  locationOptions TripLocationOption[]
+  locationOptions TripDestinationOption[]
   participants TripParticipant[]
   availabilities Availability[]
 }
 
-model TripLocationOption {
+model TripDestinationOption {
   id      String @id @default(uuid())
   trip    Trip   @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
   trip_id String
