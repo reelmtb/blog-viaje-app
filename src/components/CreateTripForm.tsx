@@ -33,8 +33,8 @@ export default function CreateTripForm({ starterId }: CreateTripFormProps) {
       if (!response.ok) throw new Error(data.error || 'Something went wrong');
       setSuccessMessage(`Trip "${data.trip_name}" created!`);
       setTripName('');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }

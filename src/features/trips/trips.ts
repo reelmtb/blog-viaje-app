@@ -2,6 +2,16 @@
 import 'server-only';
 import { prisma } from '@/lib/prisma';
 
+/* ---------------- Helper functions ---------------- */
+function generateTripCode(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
 /* ---------------- Service functions ---------------- */
 export async function createTrip(data: {
   trip_name: string;
@@ -26,6 +36,7 @@ async function createTripInDb(data: {
   return prisma.trip.create({
     data: {
       trip_name: data.trip_name,
+      code: generateTripCode(),
       starter_id: data.starter_id,
       locationOptions: data.destinationIds
         ? { create: data.destinationIds.map((destination_id) => ({ destination_id })) }
