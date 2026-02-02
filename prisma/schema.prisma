@@ -27,13 +27,14 @@ model Destination {
   destination_id String @id @default(uuid())
   name    String
   country String?
+  image   String?
   tripOptions TripDestinationOption[]
-  participantDestinations ParticipantDestination[]
 }
 
 model Trip {
   trip_id    String   @id @default(uuid())
   trip_name  String?
+  code       String   @unique
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   starter    User     @relation("StarterTrips", fields: [starter_id], references: [user_id])
@@ -43,11 +44,12 @@ model Trip {
 }
 
 model TripDestinationOption {
-  id      String @id @default(uuid())
-  trip    Trip   @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
-  trip_id String
-  destination    Destination   @relation(fields: [destination_id], references: [destination_id])
+  id             String   @id @default(uuid())
+  trip           Trip     @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
+  trip_id        String
+  destination    Destination @relation(fields: [destination_id], references: [destination_id])
   destination_id String
+  votes          DestinationVote[]
 
   @@unique([trip_id, destination_id])
 }
@@ -59,30 +61,29 @@ model TripParticipant {
   user           User   @relation(fields: [user_id], references: [user_id])
   user_id        String
   max_cost       Float?
-  destinations   ParticipantDestination[]
+  votes          DestinationVote[]
   availabilities Availability[]
 
   @@unique([trip_id, user_id])
 }
 
-model ParticipantDestination {
-  id             String @id @default(uuid())
-  participant    TripParticipant @relation(fields: [participant_id], references: [participant_id], onDelete: Cascade)
-  participant_id String
-  destination    Destination @relation(fields: [destination_id], references: [destination_id])
-  destination_id String
-  rank           Int?
+model DestinationVote {
+  id                  String              @id @default(uuid())
+  participant         TripParticipant     @relation(fields: [participant_id], references: [participant_id], onDelete: Cascade)
+  participant_id      String
+  trip_destination    TripDestinationOption @relation(fields: [trip_destination_id], references: [id], onDelete: Cascade)
+  trip_destination_id String
 
-  @@unique([participant_id, destination_id])
-  @@index([participant_id, rank])
+  @@unique([participant_id, trip_destination_id])
+  @@index([trip_destination_id])
 }
 
 model Availability {
   id             String   @id @default(uuid())
   participant    TripParticipant @relation(fields: [participant_id], references: [participant_id], onDelete: Cascade)
   participant_id String
-  date           DateTime
+  start_date     DateTime
+  end_date       DateTime
 
-  @@unique([participant_id, date])
   @@index([participant_id])
 }
