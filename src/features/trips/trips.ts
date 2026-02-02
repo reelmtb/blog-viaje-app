@@ -27,6 +27,11 @@ export async function getTrip(trip_id: string) {
   return getTripById(trip_id);
 }
 
+export async function getTripsForUser(user_id: string) {
+  if (!user_id) throw new Error('User ID required');
+  return getTripsForUserFromDb(user_id);
+}
+
 /* ---------------- Repository functions ---------------- */
 async function createTripInDb(data: {
   trip_name: string;
@@ -50,5 +55,31 @@ async function getTripById(trip_id: string) {
   return prisma.trip.findUnique({
     where: { trip_id },
     include: { locationOptions: true, participants: true },
+  });
+}
+
+async function getTripsForUserFromDb(user_id: string) {
+  return prisma.trip.findMany({
+    where: {
+      OR: [
+        { starter_id: user_id },
+        { participants: { some: { user_id } } },
+      ],
+    },
+    include: {
+      participants: {
+        include: {
+          user: true,
+          votes: true,
+        },
+      },
+      locationOptions: {
+        include: {
+          destination: true,
+          votes: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
   });
 }
