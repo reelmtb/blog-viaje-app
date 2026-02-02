@@ -24,12 +24,12 @@ model User {
   participants TripParticipant[]
 }
 
-model City {
-  city_id String @id @default(uuid())
+model Destination {
+  destination_id String @id @default(uuid())
   name    String
   country String?
   tripOptions TripLocationOption[]
-  participantCities ParticipantCity[]
+  participantDestinations ParticipantDestination[]
 }
 
 model Trip {
@@ -48,10 +48,10 @@ model TripLocationOption {
   id      String @id @default(uuid())
   trip    Trip   @relation(fields: [trip_id], references: [trip_id], onDelete: Cascade)
   trip_id String
-  city    City   @relation(fields: [city_id], references: [city_id])
-  city_id String
+  destination    Destination   @relation(fields: [destination_id], references: [destination_id])
+  destination_id String
 
-  @@unique([trip_id, city_id])
+  @@unique([trip_id, destination_id])
 }
 
 model TripParticipant {
@@ -61,19 +61,19 @@ model TripParticipant {
   user           User   @relation(fields: [user_id], references: [user_id])
   user_id        String
   max_cost       Float?
-  cities         ParticipantCity[]
+  destinations   ParticipantDestination[]
 
   @@unique([trip_id, user_id])
 }
 
-model ParticipantCity {
+model ParticipantDestination {
   id             String @id @default(uuid())
   participant    TripParticipant @relation(fields: [participant_id], references: [participant_id], onDelete: Cascade)
   participant_id String
-  city           City @relation(fields: [city_id], references: [city_id])
-  city_id        String
+  destination    Destination @relation(fields: [destination_id], references: [destination_id])
+  destination_id String
 
-  @@unique([participant_id, city_id])
+  @@unique([participant_id, destination_id])
 }
 
 model Availability {
