@@ -53,3 +53,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Create branches following the convention feature/'feature-name' from main. 
 Once live, we will create a develop branch and use feature, release, and hotfix branches.
+
+## AIRBNB APIS
+https://www.searchapi.io/airbnb-api
+https://apify.com/ecomscrape/airbnb-search-scraper/api
+https://rapidapi.com/mahmudulhasandev/api/airbnb-api5
