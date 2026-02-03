@@ -1,0 +1,59 @@
+erDiagram
+    User {
+        string user_id PK
+        string name
+        string email UK
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Destination {
+        string destination_id PK
+        string name
+        string country
+        string image
+    }
+
+    Trip {
+        string trip_id PK
+        string trip_name
+        string code UK
+        datetime createdAt
+        datetime updatedAt
+        string starter_id FK
+    }
+
+    TripDestinationOption {
+        string id PK
+        string trip_id FK
+        string destination_id FK
+    }
+
+    TripParticipant {
+        string participant_id PK
+        string trip_id FK
+        string user_id FK
+        float max_cost
+    }
+
+    DestinationVote {
+        string id PK
+        string participant_id FK
+        string trip_destination_id FK
+    }
+
+    Availability {
+        string id PK
+        string participant_id FK
+        datetime start_date
+        datetime end_date
+    }
+
+    User ||--o{ Trip : "starts"
+    User ||--o{ TripParticipant : "participates"
+    Trip ||--o{ TripDestinationOption : "has"
+    Trip ||--o{ TripParticipant : "has"
+    Destination ||--o{ TripDestinationOption : "offered_in"
+    TripParticipant ||--o{ DestinationVote : "casts"
+    TripParticipant ||--o{ Availability : "has"
+    TripDestinationOption ||--o{ DestinationVote : "receives"
