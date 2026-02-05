@@ -22,12 +22,12 @@ export function TripsList({ trips }: TripsListProps) {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <Link href="/trip/new">
-            <Button className="gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
+          <Button asChild className="gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
+            <Link href="/trip/new">
               <PlusIcon className="h-4 w-4" />
               Create Your First Trip
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           {/* TODO: Add "Join a Trip" button linking to /join when Phase 4 is complete */}
         </div>
       </section>
@@ -43,12 +43,12 @@ export function TripsList({ trips }: TripsListProps) {
             {trips.length} {trips.length === 1 ? "trip" : "trips"} in progress
           </p>
         </div>
-        <Link href="/trip/new">
-          <Button variant="outline" className="gap-2 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950">
+        <Button asChild variant="outline" className="gap-2 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950">
+          <Link href="/trip/new">
             <PlusIcon className="h-4 w-4" />
             New Trip
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

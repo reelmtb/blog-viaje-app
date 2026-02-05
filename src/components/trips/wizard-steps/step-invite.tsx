@@ -5,14 +5,13 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CheckIcon, CopyIcon, CheckCircleIcon, ArrowLeftIcon, HomeIcon } from "lucide-react"
+import { CheckIcon, CopyIcon, CheckCircleIcon, HomeIcon } from "lucide-react"
 
 interface StepInviteProps {
   tripCode: string
-  onBack: () => void
 }
 
-export function StepInvite({ tripCode, onBack }: StepInviteProps) {
+export function StepInvite({ tripCode }: StepInviteProps) {
   const router = useRouter()
   const [copied, setCopied] = useState<"link" | "code" | null>(null)
 
@@ -135,12 +134,7 @@ export function StepInvite({ tripCode, onBack }: StepInviteProps) {
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between pt-6 border-t border-border">
-        <Button variant="outline" onClick={onBack}>
-          <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-
+      <div className="flex items-center justify-end pt-6 border-t border-border">
         <Button
           size="lg"
           className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30"

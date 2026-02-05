@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { createTripWithPreferences } from "@/features/trips/trips"
+import { DateRange, CreatedTrip } from "@/features/trips/types"
 import { WizardProgress } from "./wizard-steps/wizard-progress"
 import { StepSetup } from "./wizard-steps/step-setup"
 import { StepPreferences } from "./wizard-steps/step-preferences"
@@ -18,20 +19,10 @@ const STEPS = [
 
 type WizardStep = 1 | 2 | 3
 
-interface DateRange {
-  start_date: Date
-  end_date: Date
-}
-
-interface CreatedTrip {
-  trip_id: string
-  code: string
-  trip_name: string | null
-}
-
 export function CreateTripWizard() {
   const [step, setStep] = useState<WizardStep>(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [createdTrip, setCreatedTrip] = useState<CreatedTrip | null>(null)
 
   // Form data
@@ -42,6 +33,7 @@ export function CreateTripWizard() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true)
+    setError(null)
     try {
       const result = await createTripWithPreferences({
         trip_name: tripName,
@@ -52,8 +44,9 @@ export function CreateTripWizard() {
       })
       setCreatedTrip(result)
       setStep(3)
-    } catch (error) {
-      console.error("Failed to create trip:", error)
+    } catch (err) {
+      console.error("Failed to create trip:", err)
+      setError("Failed to create trip. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -84,14 +77,12 @@ export function CreateTripWizard() {
           onBack={() => setStep(1)}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
+          error={error}
         />
       )}
 
       {step === 3 && createdTrip && (
-        <StepInvite
-          tripCode={createdTrip.code}
-          onBack={() => setStep(2)}
-        />
+        <StepInvite tripCode={createdTrip.code} />
       )}
     </div>
   )

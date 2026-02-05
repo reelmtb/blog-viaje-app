@@ -10,6 +10,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon, XIcon, CalendarIcon, DollarSignIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { DateRange } from "@/features/trips/types"
 
 const BUDGET_PRESETS = [
   { value: 500, label: "$500" },
@@ -19,11 +20,6 @@ const BUDGET_PRESETS = [
   { value: 5000, label: "$5,000" },
   { value: 10000, label: "$10,000+" },
 ]
-
-interface DateRange {
-  start_date: Date
-  end_date: Date
-}
 
 interface StepPreferencesProps {
   destinations: string[]
@@ -35,6 +31,7 @@ interface StepPreferencesProps {
   onBack: () => void
   onSubmit: () => void
   isSubmitting: boolean
+  error: string | null
 }
 
 export function StepPreferences({
@@ -47,6 +44,7 @@ export function StepPreferences({
   onBack,
   onSubmit,
   isSubmitting,
+  error,
 }: StepPreferencesProps) {
   const [newDestination, setNewDestination] = useState("")
   const [customBudget, setCustomBudget] = useState("")
@@ -355,20 +353,25 @@ export function StepPreferences({
       </Card>
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-6 border-t border-border">
-        <Button variant="ghost" onClick={onBack}>
-          <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          Back
-        </Button>
-        <Button
-          onClick={onSubmit}
-          disabled={isSubmitting}
-          size="lg"
-          className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30"
-        >
-          {isSubmitting ? "Creating..." : "Create Trip"}
-          <ArrowRightIcon className="ml-2 h-4 w-4" />
-        </Button>
+      <div className="space-y-4 pt-6 border-t border-border">
+        {error && (
+          <p className="text-sm text-destructive text-right">{error}</p>
+        )}
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" onClick={onBack}>
+            <ArrowLeftIcon className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          <Button
+            onClick={onSubmit}
+            disabled={isSubmitting}
+            size="lg"
+            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30"
+          >
+            {isSubmitting ? "Creating..." : "Create Trip"}
+            <ArrowRightIcon className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   )
