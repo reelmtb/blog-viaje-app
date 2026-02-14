@@ -1,3 +1,24 @@
+export default function HomePage() {
+  return (
+    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center space-y-6">
+      <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+        <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
+          Viaje
+        </span>
+      </h1>
+      <p className="text-xl md:text-2xl text-muted-foreground">
+        Coming Soon
+      </p>
+      <p className="text-muted-foreground max-w-md">
+        A simple way to plan trips together with friends and family.
+      </p>
+    </div>
+  )
+}
+
+/*
+// Original page code - commented out for deployment
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react"
@@ -14,10 +35,8 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-20">
-      {/* My Trips Section */}
       <TripsList trips={trips} />
 
-      {/* Hero Section */}
       <section className="text-center space-y-6 py-12 md:py-20">
         <div className="space-y-4">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
@@ -44,7 +63,6 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* How it works */}
       <section className="max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-3">
           <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
@@ -54,7 +72,6 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Step 1 */}
           <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
             <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
               <UsersIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -67,7 +84,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Step 2 */}
           <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
             <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
               <MapPinIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -80,7 +96,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Step 3 */}
           <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
             <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
               <ArrowRightIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -93,7 +108,6 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Step 4 */}
           <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
             <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
               <CalendarIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -108,7 +122,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="text-center space-y-6 py-12 md:py-20 bg-muted/50 -mx-4 px-4 rounded-2xl">
         <h2 className="text-3xl md:text-4xl font-bold">
           Ready to plan your next adventure?
@@ -129,3 +142,4 @@ export default async function HomePage() {
     </div>
   )
 }
+*/
