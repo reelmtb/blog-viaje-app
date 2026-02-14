@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react"
 import { TripsList } from "@/components/trips/trips-list"
 import { getTripsForUser } from "@/features/trips/trips"
+import { JoinTripDialog } from "@/components/trips/join-trip-dialog"
 
 // Mock user ID - will be replaced with auth later
 const MOCK_USER_ID = "11111111-1111-1111-1111-111111111111"
@@ -38,7 +39,7 @@ export default async function HomePage() {
                 <ArrowRightIcon className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            {/* TODO: Add "Join a Trip" button linking to /join when Phase 4 is complete */}
+            <JoinTripDialog />
           </div>
         )}
       </section>
@@ -115,12 +116,15 @@ export default async function HomePage() {
         <p className="text-lg text-muted-foreground max-w-xl mx-auto">
           Create a trip in minutes and invite your friends to join
         </p>
-        <Link href="/trip/new">
-          <Button size="lg" className="text-lg px-8 h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
-            Start Planning Now
-            <ArrowRightIcon className="ml-2 h-5 w-5" />
-          </Button>
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/trip/new">
+            <Button size="lg" className="text-lg px-8 h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
+              Start Planning Now
+              <ArrowRightIcon className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
+          <JoinTripDialog />
+        </div>
       </section>
     </div>
   )

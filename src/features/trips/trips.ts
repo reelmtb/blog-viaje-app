@@ -1,13 +1,13 @@
 "use server";
 import 'server-only';
 import { prisma } from '@/lib/prisma';
+import { TRIP_CODE_CHARS, TRIP_CODE_LENGTH } from '@/constants/trip';
 
 /* ---------------- Helper functions ---------------- */
 function generateTripCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "";
-  for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  for (let i = 0; i < TRIP_CODE_LENGTH; i++) {
+    code += TRIP_CODE_CHARS.charAt(Math.floor(Math.random() * TRIP_CODE_CHARS.length));
   }
   return code;
 }
@@ -40,6 +40,25 @@ export async function createTripWithPreferences(data: CreateTripInput) {
 export async function getTrip(trip_id: string) {
   if (!trip_id) throw new Error('Trip ID required');
   return getTripById(trip_id);
+}
+
+export async function getTripByCode(code: string) {
+  if (!code) throw new Error('Trip code required');
+  return getTripByCodeFromDb(code);
+}
+
+export interface JoinTripInput {
+  code: string;
+  user_id: string;
+  destinations?: string[]; // destination names to vote for or suggest
+  availabilities?: { start_date: Date; end_date: Date }[];
+  max_cost?: number;
+}
+
+export async function joinTrip(data: JoinTripInput) {
+  if (!data.code) throw new Error('Trip code required');
+  if (!data.user_id) throw new Error('User ID required');
+  return joinTripInDb(data);
 }
 
 export async function getTripsForUser(user_id: string) {
@@ -155,6 +174,137 @@ async function createTripWithPreferencesInDb(data: CreateTripInput) {
     }
 
     // Return the created trip with code
+    return { trip_id: trip.trip_id, code: trip.code, trip_name: trip.trip_name };
+  });
+}
+
+async function getTripByCodeFromDb(code: string) {
+  return prisma.trip.findUnique({
+    where: { code },
+    include: {
+      starter: {
+        select: { user_id: true, name: true },
+      },
+      participants: {
+        include: {
+          user: { select: { user_id: true, name: true } },
+          votes: {
+            include: {
+              trip_destination: {
+                include: { destination: true },
+              },
+            },
+          },
+          availabilities: true,
+        },
+      },
+      locationOptions: {
+        include: {
+          destination: true,
+          votes: true,
+        },
+      },
+    },
+  });
+}
+
+async function joinTripInDb(data: JoinTripInput) {
+  return prisma.$transaction(async (tx) => {
+    // 1. Find the trip by code
+    const trip = await tx.trip.findUnique({
+      where: { code: data.code },
+    });
+
+    if (!trip) {
+      throw new Error('Trip not found');
+    }
+
+    // 2. Verify user exists
+    const user = await tx.user.findUnique({
+      where: { user_id: data.user_id },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // 3. Check if user is already a participant
+    const existingParticipant = await tx.tripParticipant.findUnique({
+      where: {
+        trip_id_user_id: {
+          trip_id: trip.trip_id,
+          user_id: data.user_id,
+        },
+      },
+    });
+
+    if (existingParticipant) {
+      throw new Error('You have already joined this trip');
+    }
+
+    // 4. Create participant
+    const participant = await tx.tripParticipant.create({
+      data: {
+        trip_id: trip.trip_id,
+        user_id: data.user_id,
+        max_cost: data.max_cost,
+      },
+    });
+
+    // 5. Handle destinations (vote for existing or suggest new ones)
+    if (data.destinations && data.destinations.length > 0) {
+      for (const destName of data.destinations) {
+        // Find or create destination
+        let destination = await tx.destination.findFirst({
+          where: { name: { equals: destName, mode: 'insensitive' } },
+        });
+
+        if (!destination) {
+          destination = await tx.destination.create({
+            data: { name: destName },
+          });
+        }
+
+        // Find or create trip destination option
+        let tripDestOption = await tx.tripDestinationOption.findUnique({
+          where: {
+            trip_id_destination_id: {
+              trip_id: trip.trip_id,
+              destination_id: destination.destination_id,
+            },
+          },
+        });
+
+        if (!tripDestOption) {
+          tripDestOption = await tx.tripDestinationOption.create({
+            data: {
+              trip_id: trip.trip_id,
+              destination_id: destination.destination_id,
+            },
+          });
+        }
+
+        // Create vote for this destination
+        await tx.destinationVote.create({
+          data: {
+            participant_id: participant.participant_id,
+            trip_destination_id: tripDestOption.id,
+          },
+        });
+      }
+    }
+
+    // 6. Create availabilities
+    if (data.availabilities && data.availabilities.length > 0) {
+      await tx.availability.createMany({
+        data: data.availabilities.map((a) => ({
+          participant_id: participant.participant_id,
+          start_date: a.start_date,
+          end_date: a.end_date,
+        })),
+      });
+    }
+
     return { trip_id: trip.trip_id, code: trip.code, trip_name: trip.trip_name };
   });
 }
