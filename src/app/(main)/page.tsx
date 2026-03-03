@@ -1,145 +1,96 @@
-export default function HomePage() {
-  return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center space-y-6">
-      <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-        <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
-          Viaje
-        </span>
-      </h1>
-      <p className="text-xl md:text-2xl text-muted-foreground">
-        Coming Soon
-      </p>
-      <p className="text-muted-foreground max-w-md">
-        A simple way to plan trips together with friends and family.
-      </p>
-    </div>
-  )
-}
-
-/*
-// Original page code - commented out for deployment
-
 import Link from "next/link"
+import { ArrowRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon, CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react"
-import { TripsList } from "@/components/trips/trips-list"
-import { getTripsForUser } from "@/features/trips/trips"
-import { JoinTripDialog } from "@/components/trips/join-trip-dialog"
-
-// Mock user ID - will be replaced with auth later
-const MOCK_USER_ID = "11111111-1111-1111-1111-111111111111"
+import { getAllPosts, getAllCategories } from "@/lib/blog"
+import { FeaturedPosts } from "@/components/blog/featured-posts"
+import { PostList } from "@/components/blog/post-list"
+import { CATEGORY_CONFIG, BlogCategory } from "@/types/blog"
 
 export default async function HomePage() {
-  const trips = await getTripsForUser(MOCK_USER_ID)
-  const hasTrips = trips.length > 0
+  const [featuredPosts, recentPosts, categories] = await Promise.all([
+    getAllPosts({ featured: true, limit: 3 }),
+    getAllPosts({ limit: 6 }),
+    getAllCategories(),
+  ])
 
   return (
-    <div className="space-y-20">
-      <TripsList trips={trips} />
-
-      <section className="text-center space-y-6 py-12 md:py-20">
-        <div className="space-y-4">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Plan trips together,{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">effortlessly</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            No sign-ups. No spreadsheets. No endless group chats.
-            <br />
-            Just simple, collaborative travel planning.
-          </p>
-        </div>
-
-        {hasTrips && (
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/trip/new">
-              <Button size="lg" className="text-lg px-8 h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
-                Plan Another Trip
-                <ArrowRightIcon className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <JoinTripDialog />
-          </div>
-        )}
-      </section>
-
-      <section className="max-w-5xl mx-auto space-y-12">
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold">How it works</h2>
-          <p className="text-lg text-muted-foreground">
-            Four simple steps to plan your perfect group trip
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
-            <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-              <UsersIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">1. Create Trip</h3>
-              <p className="text-sm text-muted-foreground">
-                Give your trip a name and get started
-              </p>
-            </div>
-          </div>
-
-          <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
-            <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-              <MapPinIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">2. Add Preferences</h3>
-              <p className="text-sm text-muted-foreground">
-                Suggest destinations, dates, and budget
-              </p>
-            </div>
-          </div>
-
-          <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
-            <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-              <ArrowRightIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">3. Invite Group</h3>
-              <p className="text-sm text-muted-foreground">
-                Share a link for others to join and vote
-              </p>
-            </div>
-          </div>
-
-          <div className="relative space-y-4 p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-200 dark:hover:border-blue-800 transition-all">
-            <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-              <CalendarIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">4. Decide Together</h3>
-              <p className="text-sm text-muted-foreground">
-                See overlapping dates and top destinations
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="text-center space-y-6 py-12 md:py-20 bg-muted/50 -mx-4 px-4 rounded-2xl">
-        <h2 className="text-3xl md:text-4xl font-bold">
-          Ready to plan your next adventure?
-        </h2>
-        <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-          Create a trip in minutes and invite your friends to join
+    <div className="space-y-16">
+      {/* Hero Section */}
+      <section className="text-center space-y-6 py-12 md:py-16">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          Discover Your Next{" "}
+          <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
+            Adventure
+          </span>
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          Travel guides, destination tips, and inspiration to help you plan
+          unforgettable trips around the world.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/trip/new">
-            <Button size="lg" className="text-lg px-8 h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
-              Start Planning Now
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <Link href="/blog">
+            <Button
+              size="lg"
+              className="text-lg px-8 h-12 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30"
+            >
+              Explore Blog
               <ArrowRightIcon className="ml-2 h-5 w-5" />
             </Button>
           </Link>
-          <JoinTripDialog />
         </div>
       </section>
+
+      {/* Featured Posts */}
+      {featuredPosts.length > 0 && <FeaturedPosts posts={featuredPosts} />}
+
+      {/* Categories Section */}
+      {categories.length > 0 && (
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold">Explore by Category</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            {(Object.keys(CATEGORY_CONFIG) as BlogCategory[]).map((cat) => {
+              const config = CATEGORY_CONFIG[cat]
+              const categoryData = categories.find((c) => c.category === cat)
+              return (
+                <Link
+                  key={cat}
+                  href={`/category/${cat}`}
+                  className="group flex flex-col items-center p-4 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-500/50 transition-all text-center"
+                >
+                  <span
+                    className={`text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors`}
+                  >
+                    {config.label}
+                  </span>
+                  {categoryData && (
+                    <span className="text-xs text-muted-foreground mt-1">
+                      {categoryData.count} {categoryData.count === 1 ? "post" : "posts"}
+                    </span>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Recent Posts */}
+      {recentPosts.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Recent Posts</h2>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            >
+              View all
+              <ArrowRightIcon className="h-4 w-4" />
+            </Link>
+          </div>
+          <PostList posts={recentPosts} />
+        </section>
+      )}
+
     </div>
   )
 }
-*/
