@@ -58,3 +58,10 @@ Once live, we will create a develop branch and use feature, release, and hotfix 
 https://www.searchapi.io/airbnb-api
 https://apify.com/ecomscrape/airbnb-search-scraper/api
 https://rapidapi.com/mahmudulhasandev/api/airbnb-api5
+
+## Expedia
+We need to apply to become a partner. They have a travel api, we can start a travel search in our own site and complete it in Expedia.  They have both the api and a java sdk
+https://developers.expediagroup.com/travel-redirect-api/api/resources/api-explorer
+https://developers.expediagroup.com/travel-redirect-api/sdk
+Once a partner, here are the options:
+Decide between Hosted white‑label ( they build the site with our look and feel and Expedia hosts booking flow), Widgets/Embeds (Expedia supplies JS/iframe snippets), or Full API integration (you build UI using Expedia APIs).
