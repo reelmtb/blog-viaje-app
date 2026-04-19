@@ -5,9 +5,12 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ code: string }> }
 ) {
+  console.log("SERVER LOG TEST: " + Date.now())
   try {
     const { code } = await params;
     const body = await req.json();
+    console.log('code:', code);
+    console.log('Request body:', body);
 
     const result = await joinTrip({
       code,
@@ -22,6 +25,7 @@ export async function POST(
 
     return NextResponse.json(result);
   } catch (error) {
+    console.log('Error joining trip:', error);
     const message = error instanceof Error ? error.message : 'Unknown error';
     const status = message === 'Trip not found' ? 404 : 400;
     return NextResponse.json({ error: message }, { status });

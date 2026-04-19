@@ -38,11 +38,13 @@ export async function createTripWithPreferences(data: CreateTripInput) {
 }
 
 export async function getTrip(trip_id: string) {
+  console.log('Fetching trip with ID:', trip_id);
   if (!trip_id) throw new Error('Trip ID required');
   return getTripById(trip_id);
 }
 
 export async function getTripByCode(code: string) {
+  console.log('Fetching trip with code:', code);
   if (!code) throw new Error('Trip code required');
   return getTripByCodeFromDb(code);
 }
@@ -56,6 +58,7 @@ export interface JoinTripInput {
 }
 
 export async function joinTrip(data: JoinTripInput) {
+  console.log('Joining trip with data:', data);
   if (!data.code) throw new Error('Trip code required');
   if (!data.user_id) throw new Error('User ID required');
   return joinTripInDb(data);

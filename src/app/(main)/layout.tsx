@@ -25,6 +25,15 @@ export default function MainLayout({
             >
               Home
             </Link>
+            
+            {/*
+            <Link
+              href="/trip/new"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Plan Trip
+            </Link>
+            */}
             <Link
               href="/blog"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

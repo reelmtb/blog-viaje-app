@@ -1,9 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getPostBySlug, getAllPostSlugs, getRelatedPosts } from "@/lib/blog"
-import { PostHeader } from "@/components/blog/post-header"
-import { PostContent } from "@/components/blog/post-content"
-import { RelatedPosts } from "@/components/blog/related-posts"
+import { PostTemplate } from "@/components/blog/post-template"
 
 interface PostPageProps {
   params: Promise<{ slug: string }>
@@ -72,13 +70,7 @@ export default async function PostPage({ params }: PostPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="max-w-4xl mx-auto">
-        <PostHeader post={post} />
-        <PostContent content={post.content} />
-      </article>
-      <div className="max-w-6xl mx-auto">
-        <RelatedPosts posts={relatedPosts} />
-      </div>
+      <PostTemplate post={post} relatedPosts={relatedPosts} />
     </>
   )
 }

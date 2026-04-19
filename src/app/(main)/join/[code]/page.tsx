@@ -8,10 +8,12 @@ interface JoinTripPageProps {
 }
 
 export default async function JoinTripPage({ params }: JoinTripPageProps) {
+  console.log('JoinTripPage params:');
   const { code } = await params
   const trip = await getTripByCode(code)
 
   if (!trip) {
+    console.log('Trip not found for code:', code);
     notFound()
   }
 

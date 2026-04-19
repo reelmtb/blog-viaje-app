@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
+import { ArrowRightIcon, MapPinIcon, UsersIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getAllPosts, getAllCategories } from "@/lib/blog"
 import { FeaturedPosts } from "@/components/blog/featured-posts"
@@ -39,6 +39,40 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+    
+      {/* Trip Planning Section */}
+      {/*
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-2xl p-8 md:p-12">
+        <div className="text-center space-y-6">
+          <div className="flex justify-center">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
+              <MapPinIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-3xl md:text-4xl font-bold">Plan Your Group Trip</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Create trips, coordinate schedules, and vote on destinations with your friends and family.
+              Make planning effortless and fun.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white shadow-lg shadow-blue-500/30">
+              <Link href="/trip/new">
+                <UsersIcon className="h-5 w-5" />
+                Start Planning
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="gap-2">
+              <Link href="/trip/new">
+                Join a Trip
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      */}
 
       {/* Featured Posts */}
       {featuredPosts.length > 0 && <FeaturedPosts posts={featuredPosts} />}
