@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import { PlaneIcon } from "lucide-react"
 import Link from "next/link"
 
@@ -79,6 +80,9 @@ export default function MainLayout({
           </div>
         </div>
       </footer>
+
+      {/* Analytics - Tracks all pages automatically */}
+      <Analytics />
     </div>
   )
 }
